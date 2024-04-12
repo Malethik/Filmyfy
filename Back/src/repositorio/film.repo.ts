@@ -1,5 +1,6 @@
 import createDebug from "debug";
 import { Film, Root } from "../entities/film.js";
+import fs from "fs";
 
 const debug = createDebug("W7E:repository:user");
 
@@ -10,7 +11,18 @@ export class FilmRepository {
   film = FILM;
   root = ROOT;
   constructor() {
-    debug("Instancied repository");
+    debug("Instancied repository!");
+    this.loadDb();
+  }
+
+  loadDb() {
+    try {
+      const rawData = fs.readFileSync("db.json");
+      const data = JSON.parse(rawData.toString());
+      this.film = data.film;
+    } catch (error) {
+      debug(`Error loading data from JSON:${error}`);
+    }
   }
 
   readAll() {
