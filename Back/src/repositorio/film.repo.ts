@@ -1,5 +1,5 @@
 import createDebug from "debug";
-import { Film, Root } from "../entities/film";
+import { Film, Root } from "../entities/film.js";
 
 const debug = createDebug("W7E:repository:user");
 

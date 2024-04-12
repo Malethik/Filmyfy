@@ -1,8 +1,7 @@
 import { Router as router } from "express";
 import createDebug from "debug";
-import { FilmController } from "../controllers/user.controller";
-import { FilmRepository } from "../repositorio/film.repo";
-
+import { FilmController } from "../controllers/user.controller.js";
+import { FilmRepository } from "../repositorio/film.repo.js";
 
 const debug = createDebug("W7E:router:user");
 debug("starting router");

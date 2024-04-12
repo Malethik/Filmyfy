@@ -9,7 +9,7 @@
     "run": "tsc -w",
     "start": "cross-env NODE_ENV=prod dist/index.js",
     "start:dev": "cross-env DEBUG=W7E* NODE_ENV=dev PORT=3400 node  --env-files=.env --watch dist/index.js ",
-    "start:mon": "cross-env DEBUG=W7E* NODE_ENV=dev PORT=3400 nodemon  dist/express/index.js",
+    "start:mon": "cross-env DEBUG=W7E* NODE_ENV=dev PORT=3400 nodemon  dist/index.js",
     "build": "tsc"
   },
   "keywords": [],
