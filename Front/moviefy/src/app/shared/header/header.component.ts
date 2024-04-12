@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-header',
   standalone: true,
   imports: [],
-  template: ` <h1>FILMYFY</h1> `,
+  template: ` <h1>MOVIEFY</h1> `,
   styles: `:host{
     display: block;
     background-color: #333;
