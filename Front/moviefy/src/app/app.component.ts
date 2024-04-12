@@ -10,6 +10,7 @@ import { FooterComponent } from './shared/footer/footer.component';
   imports: [RouterOutlet, HomeComponent, HeaderComponent, FooterComponent],
   template: `
     <app-header />
+
     <router-outlet />
     <app-footer> </app-footer>
   `,

@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.static("./public"));
-app.use("/", filmRouter);
+app.use("/film", filmRouter);
 
 app.use((req, res, next) => {
   debug("Alejandro approved! ;)");

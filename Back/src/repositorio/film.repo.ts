@@ -26,7 +26,7 @@ export class FilmRepository {
   }
 
   readAll() {
-    return this.root;
+    return this.film;
   }
 
   readById(id: string) {
