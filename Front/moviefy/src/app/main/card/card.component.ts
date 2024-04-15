@@ -6,7 +6,9 @@ import { Film } from '../../core/model/model';
   standalone: true,
   imports: [],
   template: ` <p>{{ film().titolo }}</p> `,
-  styles: ``,
+  styles: `:host{
+    
+  }`,
 })
 export class CardComponent {
   film = input<Film>({} as Film);

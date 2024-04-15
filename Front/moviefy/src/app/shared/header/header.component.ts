@@ -6,11 +6,12 @@ import { Component } from '@angular/core';
   imports: [],
   template: ` <h1>MOVIEFY</h1> `,
   styles: `:host{
-    display: block;
+    display: flex;
     background-color: #333;
     color: white;
-    text-align: center;
+    justify-content: center;
     padding: 10px;
+    width: 100%;
   }`,
 })
 export class HeaderComponent {}
