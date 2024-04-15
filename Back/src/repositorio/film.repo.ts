@@ -1,65 +1,76 @@
+
 import createDebug from "debug";
-import { Film, Root } from "../entities/film.js";
-import fs from "fs";
+import { Film, FilmCreate } from "../entities/film.js";
+import { readFile, writeFile } from "fs/promises";
+import { HttpError } from "../MiddleWare/http.error.js";
 
-const debug = createDebug("W7E:repository:user");
 
-const ROOT: Root[] = [];
-const FILM: Film[] = [];
+
+const debug = createDebug("W7E:repository:film");
 
 export class FilmRepository {
-  film = FILM;
-  root = ROOT;
   constructor() {
     debug("Instancied repository!");
     this.loadDb();
   }
 
-  loadDb() {
-    try {
-      const rawData = fs.readFileSync("db.json");
-      const data = JSON.parse(rawData.toString());
-      this.film = data.film;
-    } catch (error) {
-      debug(`Error loading data from JSON:${error}`);
-    }
+  private async loadDb(): Promise<Film[]> {
+    const data = await readFile("db.json", "utf-8");
+    return JSON.parse(data) as Film[];
   }
 
-  readAll() {
-    return this.film;
+  private async saveDb(film: Film[]) {
+    await writeFile("db.json", JSON.stringify(film, null, 2));
   }
 
-  readById(id: string) {
-    return this.film.find((film) => film.id === id);
+  async readAll() {
+    const result = await this.loadDb();
+    return result;
   }
 
-  create(datos: Film) {
-    const newFilm = {
-      id: (this.root.length + 1).toString(),
-      titolo: datos.titolo,
-      anno: datos.anno,
-      genere: [],
-      regista: datos.regista,
-      valutazione: datos.valutazione,
-    };
-    this.film = [...this.film, newFilm];
-    return newFilm;
-  }
-
-  update(id: string, data: Partial<Film>) {
-    const film = this.film.find((film) => film.id === id);
+  async readById(id: string) {
+    const films = await this.loadDb();
+    const film = films.find((film) => film.id === id);
     if (!film) {
-      throw new Error(`User ${id} not found`);
+      throw new HttpError(404, `Film ${id} not found`);
     }
 
-    const newFilm = { ...film, ...data };
-    this.film = this.film.map((film) => (film.id === id ? newFilm : film));
+    return film;
+  }
+
+  async create(datos: FilmCreate) {
+    const newFilm: Film = {
+      id: crypto.randomUUID(),
+      ...datos,
+    };
+    let films = await this.loadDb();
+    films = [...films, newFilm];
+    await this.saveDb(films);
     return newFilm;
   }
 
-  delete(id: string) {
-    const film = this.film.find((film) => film.id === id);
-    this.film = this.film.filter((film) => film.id !== id);
+  async update(id: string, data: Partial<Film>) {
+    let films = await this.loadDb();
+    const film = films.find((film) => film.id === id);
+    if (!film) {
+      throw new HttpError(404, "not found", `User ${id} not found`);
+    }
+
+    const newFilm: Film = { ...film, ...data };
+    films = films.map((film) => (film.id === id ? newFilm : film));
+    await this.saveDb(films);
+    return newFilm;
+  }
+
+  async delete(id: string) {
+    let films = await this.loadDb();
+    const film = films.find((film) => film.id === id);
+    if (!film) {
+      throw new HttpError(404, "not found", `User ${id} not found`);
+    }
+
+    films = films.filter((film) => film.id !== id);
+    await this.saveDb(films);
     return film;
   }
 }
