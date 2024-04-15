@@ -14,7 +14,18 @@ import { CardComponent } from '../card/card.component';
     </div>`,
   styles: `
     :host {
-      display: block;
+      display: flex;
+      align-content: center;
+      .h1{
+        width: 100%;
+      }
+      .main{
+        display: flex;
+        gap:1rem;
+        align-content: center;
+      }
+
+
 
     }`,
 })
