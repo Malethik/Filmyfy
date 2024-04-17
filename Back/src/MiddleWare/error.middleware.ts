@@ -1,6 +1,6 @@
 import debug from "debug";
 import { NextFunction, Request, Response } from "express";
-import { HttpError } from "./http.error";
+import { HttpError } from "./http.error.js";
 
 export class ErrorsMidleware {
   constructor() {
