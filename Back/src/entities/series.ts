@@ -1,15 +1,6 @@
-export interface FilmCreate {
-  titolo: string;
-  anno: string;
-  episodi: string;
-  regista: string;
-  genere: string[];
-  valutazione: string;
-}
-
 export interface SerieCreate {
   titolo: string;
-  episodi: string
+  episodi: string;
   anno: string;
   regista: string;
   genere: string[];
