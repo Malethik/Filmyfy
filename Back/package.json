@@ -10,7 +10,8 @@
     "start": "cross-env NODE_ENV=prod dist/index.js",
     "start:dev": "cross-env DEBUG=W7E* NODE_ENV=dev PORT=3400 node  --env-files=.env --watch dist/index.js ",
     "start:mon": "cross-env DEBUG=W7E* NODE_ENV=dev PORT=3400 nodemon  dist/index.js",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +30,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-xo": "^0.44.0",
     "eslint-config-xo-typescript": "^4.0.0",
+    "husky": "^9.0.11",
     "jest": "^29.7.0",
     "jest-ts-webcompat-resolver": "^1.0.0",
     "prisma": "^5.12.1",
