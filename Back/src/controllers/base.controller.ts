@@ -11,8 +11,8 @@ const debug = createDebug("W7E:base:controller");
 export abstract class BaseController<T, C> {
   constructor(
     protected readonly repo: Repo<T, C>,
-    protected validateCreateDtoSchema: Joi.ObjectSchema<C>,
-    protected validateUpdateDtoSchema: Joi.ObjectSchema<C>
+    protected createDtoSchema: Joi.ObjectSchema<C>,
+    protected updateDtoSchema: Joi.ObjectSchema<C>
   ) {
     this.repo = repo;
     debug("Instancied controller");
@@ -49,9 +49,10 @@ export abstract class BaseController<T, C> {
   async create(req: Request, res: Response, next: NextFunction) {
     const data = req.body as C;
 
-    const { error, value } = this.validate(data, {
-      abortEarly: false,
-    });
+    const { error, value }: { error: Error | undefined; value: C } =
+      this.createDtoSchema.validate(data, {
+        abortEarly: false,
+      });
     if (error) {
       next(new HttpError(406, "not acceptable", error.message));
       return;
@@ -69,7 +70,7 @@ export abstract class BaseController<T, C> {
   patching(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     const data = req.body as C;
-    const { error } = this.validate(data, {
+    const { error } = this.updateDtoSchema.validate(data, {
       abortEarly: false,
     });
     if (error) {
