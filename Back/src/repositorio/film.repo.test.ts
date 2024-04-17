@@ -13,12 +13,12 @@ describe("given a instanc of class FilmRepo", () => {
   });
 
   describe("When we use the method readAll", () => {
-    /* Test("Then it should call the method readFile", async () => {
+    test("Then it should call the method readFile", async () => {
       (readFile as jest.Mock).mockResolvedValue('[{"id":"1"}]');
       const result = await repo.readAll();
       expect(readFile).toHaveBeenCalled();
       expect(result).toEqual([]);
-    }); */
+    });
     test("Then it should call the method readFile", async () => {
       (readFile as jest.Mock).mockResolvedValue('[{"id":"1"}]');
       const result = await repo.readAll();
