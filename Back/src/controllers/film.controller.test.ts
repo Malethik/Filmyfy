@@ -3,15 +3,6 @@ import { FilmRepo } from "../repositorio/film.SQL.repo";
 import { FilmController } from "./film.controller";
 import { NextFunction, type Request, type Response } from "express";
 
-const mockPrisma = {
-  film: {
-    findMany: jest.fn().mockResolvedValue({}),
-    findUnique: jest.fn().mockResolvedValue({ id: "1" }),
-    create: jest.fn().mockResolvedValue({}),
-    update: jest.fn().mockResolvedValue({}),
-    delete: jest.fn().mockResolvedValue({}),
-  },
-} as unknown as PrismaClient;
 describe("Given a film controller", () => {
   const prismaClient = new PrismaClient();
   const controller = new FilmController(new FilmRepo(prismaClient));
@@ -31,29 +22,29 @@ describe("Given a film controller", () => {
     const res = { status: jest.fn(), json: jest.fn() } as unknown as Response;
     const next = jest.fn() as NextFunction;
     await controller.getById(req, res, next);
-    expect(res.json).toHaveBeenCalled();
+    expect(res.json(200)).toHaveBeenCalledWith(200);
   });
   test("Then it should call the method create", async () => {
-    const req = { body: { id: "1" } } as unknown as Request;
-    const res = mockPrisma as unknown as Response;
-    const next = mockPrisma as unknown as NextFunction;
+    const req = { body: { titolo: "1" } } as unknown as Request;
+    const res = jest.fn() as unknown as Response;
+    const next = jest.fn() as NextFunction;
     await controller.create(req, res, next);
     expect(res.status).toHaveBeenCalled();
-    expect(res.json).toHaveBeenCalledWith(201);
+    expect(res.json(201)).toHaveBeenCalledWith(201);
   });
   test("Then it should call the method update", async () => {
-    const req = mockPrisma as unknown as Request;
-    const res = mockPrisma as unknown as Response;
-    const next = mockPrisma as unknown as NextFunction;
+    const req = { body: { id: "1" } } as unknown as Request;
+    const res = jest.fn() as unknown as Response;
+    const next = jest.fn() as NextFunction;
     await controller.patching(req, res, next);
     expect(res.status).toHaveBeenCalled();
-    expect(res.json).toHaveBeenCalledWith({});
+    expect(res.json(201)).toHaveBeenCalledWith(201);
   });
   test("Then it should call the method delete", async () => {
     const req = { params: { id: "1" } } as unknown as Request;
-    const res = mockPrisma as unknown as Response;
-    const next = mockPrisma as unknown as NextFunction;
+    const res = jest.fn() as unknown as Response;
+    const next = jest.fn() as NextFunction;
     await controller.erase(req, res, next);
-    expect(res.status).toHaveBeenCalled();
+    expect(res.status(200)).toHaveBeenCalledWith(200);
   });
 });

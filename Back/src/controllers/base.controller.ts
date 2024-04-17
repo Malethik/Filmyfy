@@ -1,15 +1,19 @@
 /* eslint-disable no-unused-vars */
 import { NextFunction, type Request, type Response } from "express";
 import createDebug from "debug";
-import { type Film } from "../entities/film.js";
-import { createSchema, updateSchema } from "../entities/film.schema.js";
+import Joi from "joi";
+
 import { HttpError } from "../MiddleWare/http.error.js";
-import { FilmRepo } from "../repositorio/film.SQL.repo.js";
+import { Repo } from "../repositorio/type.repo.js";
 
-const debug = createDebug("W7E:controller:film");
+const debug = createDebug("W7E:base:controller");
 
-export class FilmController {
-  constructor(private readonly repo: FilmRepo) {
+export abstract class BaseController<T, C> {
+  constructor(
+    protected readonly repo: Repo<T, C>,
+    protected validateCreateDtoSchema: Joi.ObjectSchema<C>,
+    protected validateUpdateDtoSchema: Joi.ObjectSchema<C>
+  ) {
     this.repo = repo;
     debug("Instancied controller");
   }
@@ -43,9 +47,9 @@ export class FilmController {
   }
 
   async create(req: Request, res: Response, next: NextFunction) {
-    const data = req.body as Film;
+    const data = req.body as C;
 
-    const { error, value } = createSchema.validate(data, {
+    const { error, value } = this.validate(data, {
       abortEarly: false,
     });
     if (error) {
@@ -64,8 +68,8 @@ export class FilmController {
 
   patching(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
-    const data = req.body as Film;
-    const { error } = updateSchema.validate(data, {
+    const data = req.body as C;
+    const { error } = this.validate(data, {
       abortEarly: false,
     });
     if (error) {

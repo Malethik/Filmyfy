@@ -1,15 +1,16 @@
 /* eslint-disable no-unused-vars */
 import { NextFunction, type Request, type Response } from "express";
 import createDebug from "debug";
-import { type Film } from "../entities/film.js";
+import { Serie } from "@prisma/client";
+
 import { createSchema, updateSchema } from "../entities/film.schema.js";
 import { HttpError } from "../MiddleWare/http.error.js";
-import { FilmRepo } from "../repositorio/film.SQL.repo.js";
+import { SerieRepo } from "../repositorio/serie.SQL.repo.js";
 
-const debug = createDebug("W7E:controller:film");
+const debug = createDebug("W7E:controller:serie");
 
-export class FilmController {
-  constructor(private readonly repo: FilmRepo) {
+export class SerieController {
+  constructor(private readonly repo: SerieRepo) {
     this.repo = repo;
     debug("Instancied controller");
   }
@@ -43,7 +44,7 @@ export class FilmController {
   }
 
   async create(req: Request, res: Response, next: NextFunction) {
-    const data = req.body as Film;
+    const data = req.body as Serie;
 
     const { error, value } = createSchema.validate(data, {
       abortEarly: false,
@@ -64,7 +65,7 @@ export class FilmController {
 
   patching(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
-    const data = req.body as Film;
+    const data = req.body as Serie;
     const { error } = updateSchema.validate(data, {
       abortEarly: false,
     });
