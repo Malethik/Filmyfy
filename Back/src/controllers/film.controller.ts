@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
 import { NextFunction, type Request, type Response } from "express";
 import createDebug from "debug";
-import { FilmRepository } from "../repositorio/film.repo.js";
 import { type Film } from "../entities/film.js";
 import { filmCreateSchema, filmUpdateSchema } from "../entities/film.schema.js";
 import { HttpError } from "../MiddleWare/http.error.js";
+import { FilmRepo } from "../repositorio/film.SQL.repo.js";
 
 const debug = createDebug("W7E:controller");
 
 export class FilmController {
-  constructor(private readonly repo: FilmRepository) {
+  constructor(private readonly repo: FilmRepo) {
     this.repo = repo;
     debug("Instancied controller");
   }

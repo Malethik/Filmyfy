@@ -1,5 +1,4 @@
 import { readFile } from "fs/promises";
-
 import { FilmRepository } from "./film.repo";
 import { HttpError } from "../MiddleWare/http.error";
 import { FilmCreate } from "../entities/film";
@@ -14,11 +13,17 @@ describe("given a instanc of class FilmRepo", () => {
   });
 
   describe("When we use the method readAll", () => {
-    test("Then it should call the method readFile", async () => {
-      (readFile as jest.Mock).mockResolvedValue("[]");
+    /* Test("Then it should call the method readFile", async () => {
+      (readFile as jest.Mock).mockResolvedValue('[{"id":"1"}]');
       const result = await repo.readAll();
       expect(readFile).toHaveBeenCalled();
       expect(result).toEqual([]);
+    }); */
+    test("Then it should call the method readFile", async () => {
+      (readFile as jest.Mock).mockResolvedValue('[{"id":"1"}]');
+      const result = await repo.readAll();
+      expect(readFile).toHaveBeenCalled();
+      expect(result).toEqual([{ id: "1" }]);
     });
   });
 
@@ -29,6 +34,7 @@ describe("given a instanc of class FilmRepo", () => {
       expect(result).toEqual({ id: "1" });
     });
   });
+
   describe("When we use the method readById with invalid ID", () => {
     test("Then it should call the method readById with wrong ID", async () => {
       (readFile as jest.Mock).mockResolvedValue('[{"id":"1"}]');
@@ -49,7 +55,7 @@ describe("given a instanc of class FilmRepo", () => {
 
   describe("When we use the method update", () => {
     test("Then it should call the method update", async () => {
-      (readFile as unknown as jest.Mock).mockResolvedValue('[{"id":"1"}]');
+      (readFile as jest.Mock).mockResolvedValue('[{"id":"1"}]');
       const result = await repo.update("1", {});
       expect(result).toEqual({ id: "1" });
     });

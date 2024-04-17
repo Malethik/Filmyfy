@@ -1,20 +1,28 @@
 import { createServer } from "http";
 import createDebug from "debug";
 import "dotenv/config";
-import { createApp } from "./app.js";
-import { exit } from "process";
+import { createApp, startApp } from "./app.js";
+import { dbConnect } from "./tools/db.connet.js";
 
 const debug = createDebug("W7E:server");
 
 const port = process.env.PORT ?? 3400;
+const app = createApp();
+const server = createServer(app);
 
-const server = createServer(createApp());
+dbConnect()
+  .then((prisma) => {
+    startApp(app, prisma);
+    server.listen(port);
+  })
 
-server.listen(port);
+  .catch((error) => {
+    server.emit("error", error);
+  });
 
 server.on("error", (error) => {
   debug("Error", error);
-  exit(1);
+  process.exit(1);
 });
 
 server.on("listening", () => {

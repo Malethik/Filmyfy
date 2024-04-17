@@ -1,10 +1,7 @@
-
 import createDebug from "debug";
 import { Film, FilmCreate } from "../entities/film.js";
 import { readFile, writeFile } from "fs/promises";
 import { HttpError } from "../MiddleWare/http.error.js";
-
-
 
 const debug = createDebug("W7E:repository:film");
 
